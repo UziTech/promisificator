@@ -12,3 +12,5 @@ const promisificator = (callback) => {
 		};
 	};
 };
+
+module.exports = promisificator;
