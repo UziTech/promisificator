@@ -1,6 +1,6 @@
 {
 	"name": "promisificator",
-	"version": "3.0.0",
+	"version": "3.0.1",
 	"description": "Change a callback into a promise",
 	"main": "src/index.js",
 	"repository": {
