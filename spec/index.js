@@ -1,14 +1,28 @@
-"use strict";
+const promisificator = require("../src");
 
-const promisificator = require("../src/index.js");
+console.log("start");
 
-const {
-    promise,
-    callback,
-} = promisificator();
+function myFunc(callback) {
+	let promise;
+	({
+		promise,
+		callback,
+	} = promisificator(callback));
 
-promise
-	.then(console.log)
-	.catch(console.error);
 
-callback(null, "test");
+	/** do stuff **/
+	callback(null, "test");
+
+	return promise;
+}
+
+myFunc().then(console.log.bind(null, "promise"), console.error); // console.log("test");
+
+myFunc((err, result) => {
+	if (err) {
+		return console.error(err);
+	}
+	console.log("callback", result);
+}); // console.log("test");
+
+console.log("end");
