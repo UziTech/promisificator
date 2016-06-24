@@ -2,10 +2,10 @@ const promisificator = (callback) => {
 	let promise;
 	if (typeof callback === "undefined") {
 		promise = new Promise((resolve, reject) => {
-			callback = (err, value) => {
+			callback = function(err, value) {
 				if (err) {
 					reject(err);
-				} else if (arguments.length === 2) {
+				} else if (arguments.length <= 2) {
 					resolve(value);
 				} else {
 					let values = Array.from(arguments).slice(1);
