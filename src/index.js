@@ -1,3 +1,5 @@
+"use strict";
+
 const promisificator = (callback) => {
 	let promise;
 	if (typeof callback === "undefined") {

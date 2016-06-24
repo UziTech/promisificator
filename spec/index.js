@@ -1,3 +1,5 @@
+"use strict";
+
 const promisificator = require("../src/index.js");
 
 const {
