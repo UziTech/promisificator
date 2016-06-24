@@ -2,27 +2,24 @@ const promisificator = require("../src");
 
 console.log("start");
 
-function myFunc(callback) {
-	let promise;
-	({
-		promise,
-		callback,
-	} = promisificator(callback));
+function myFunc(arg, cb) {
+  const {
+    promise,
+    callback,
+  } = promisificator(cb);
 
+  callback(null, arg);
 
-	/** do stuff **/
-	callback(null, "test");
-
-	return promise;
+  return promise;
 }
 
-myFunc().then(console.log.bind(null, "promise"), console.error); // console.log("test");
+myFunc("promise").then(console.log);
 
-myFunc((err, result) => {
-	if (err) {
-		return console.error(err);
-	}
-	console.log("callback", result);
-}); // console.log("test");
+myFunc("callback", (err, result) => {
+  if (err) {
+    return console.error(err);
+  }
+  console.log(result);
+});
 
 console.log("end");
