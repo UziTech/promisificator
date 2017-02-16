@@ -45,7 +45,7 @@ function myFunc(arg, cb) {
   return promise;
 }
 
-myFunc("promise").then(console.log);
+myFunc("promise").then(console.log, console.error);
 
 myFunc("callback", (err, result) => {
   if (err) {
