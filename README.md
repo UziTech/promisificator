@@ -1,5 +1,7 @@
 # promisificator
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/UziTech/promisificator.svg)](https://greenkeeper.io/)
+
 Returns a `promise` and a `callback` that will fulfill the `promise`.
 
 ## Examples
