@@ -54,3 +54,19 @@ myFunc("callback", (err, result) => {
   console.log(result);
 });
 ```
+
+#### 3. Turn a callback function into a promise
+
+```javascript
+const fs = require("fs");
+const promisificator = require("promisificator");
+
+const { promisify } = promisificator();
+
+//`promisify(fs.readFile)` will return a function that returns a promise
+promisify(fs.readFile)("/etc/password").then((data) => {
+  console.log(data);
+}, (err) => {
+  throw err;
+});
+```
