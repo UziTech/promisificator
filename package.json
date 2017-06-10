@@ -19,6 +19,9 @@
 	},
 	"homepage": "https://github.com/UziTech/promisificator#readme",
 	"scripts": {
-		"test": "node spec/index.js"
+		"test": "jasmine spec/index.js"
+	},
+	"devDependencies": {
+		"jasmine": "^2.6.0"
 	}
 }
