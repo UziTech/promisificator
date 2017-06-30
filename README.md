@@ -59,9 +59,7 @@ myFunc("callback", (err, result) => {
 
 ```javascript
 const fs = require("fs");
-const promisificator = require("promisificator");
-
-const { promisify } = promisificator();
+const { promisify } = require("promisificator");
 
 //`promisify(fs.readFile)` will return a function that returns a promise
 promisify(fs.readFile)("/etc/password").then((data) => {
