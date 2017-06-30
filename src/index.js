@@ -24,27 +24,23 @@ const promisificator = (cb) => {
 			throw new Error("First argument must be a function or undefined.");
 	}
 
-	const promisify = function (func) {
-		if (typeof func !== "function") {
-			throw new Error("First argument must be a function.");
-		}
-
-		return function () {
-			let args = Array.from(arguments);
-			let undef;
-			while (args.length < func.length - 1) {
-				args.push(undef);
-			}
-			args.push(callback);
-			func.apply(null, args);
-			return promise;
-		};
-	};
-
 	return {
 		promise,
 		callback,
-		promisify,
+	};
+};
+
+promisificator.promisify = function (func) {
+	return function () {
+		const { promise, callback } = promisificator();
+		let args = Array.from(arguments);
+		let undef;
+		while (args.length < func.length - 1) {
+			args.push(undef);
+		}
+		args.push(callback);
+		func.apply(null, args);
+		return promise;
 	};
 };
 
