@@ -13,7 +13,7 @@ const promisificator = require("promisificator");
 const {
   promise,
   callback,
-} = promisificator();
+} = promisificator({rejectOnError: true});
 
 //`callback` can be passed to any async function that takes a callback
 fs.readFile("/etc/password", callback);
@@ -26,7 +26,7 @@ promise.then((data) => {
 });
 ```
 
-#### 2. Allow a function to accept a callback or return a promise
+#### 3. Allow a function to accept a callback or return a promise
 
 ```javascript
 const promisificator = require("promisificator");
@@ -55,16 +55,40 @@ myFunc("callback", (err, result) => {
 });
 ```
 
-#### 3. Turn a callback function into a promise
+#### 4. Turn a callback function into a promise
 
 ```javascript
 const fs = require("fs");
 const { promisify } = require("promisificator");
 
 //`promisify(fs.readFile)` will return a function that returns a promise
-promisify(fs.readFile)("/etc/password").then((data) => {
+promisify(fs.readFile, {callbackArg: -1})("/etc/password").then((data) => {
   console.log(data);
 }, (err) => {
   throw err;
 });
 ```
+
+## Options
+
+#### rejectOnError
+
+Default: `true`
+
+Reject the promise if the first argument of the callback is truthy.
+
+#### alwaysReturnArray
+
+Default: `false`
+
+Resolve the promise with an array of values if there is only one argument.
+
+By default Promisificator will return an array only if there is more than one non-error argument sent to the callback.
+
+#### callbackArg
+
+Default: `-1`
+
+The argument index to place the callback for `promisify`.
+
+Negative values will be from the end of the function arguments.
