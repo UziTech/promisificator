@@ -19,9 +19,15 @@
 	},
 	"homepage": "https://github.com/UziTech/promisificator#readme",
 	"scripts": {
-		"test": "jasmine spec/index.js"
+		"test": "jasmine ./spec/*-spec.js",
+		"release": "test-tag-publish",
+		"release:patch": "test-tag-publish patch",
+		"release:minor": "test-tag-publish minor",
+		"release:major": "test-tag-publish major"
 	},
 	"devDependencies": {
-		"jasmine": "^2.6.0"
+		"eslint": "4.17.0",
+		"jasmine": "^2.99.0",
+		"test-tag-publish": "2.0.0"
 	}
 }
