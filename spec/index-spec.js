@@ -125,6 +125,10 @@ describe("promisificator", function () {
 				this.middleCallback = (arg, cb, arg1) => {
 					setTimeout(() => cb(null, arg, arg1), 1);
 				};
+				this.agumentsCallback = (...args) => {
+					const cb = args.pop();
+					setTimeout(() => cb(null, ...args), 1);
+				};
 			});
 
 			it("should set the callback arg according to callbackArg", async function () {
@@ -138,6 +142,13 @@ describe("promisificator", function () {
 				const arg = "arg";
 				const arg1 = "arg1";
 				const value = await promisify(this.middleCallback, {callbackArg: -2})(arg, null, arg1);
+				expect(value).toEqual([arg, arg1]);
+			});
+
+			it("should set the callback arg according to negative callbackArg", async function () {
+				const arg = "arg";
+				const arg1 = "arg1";
+				const value = await promisify(this.agumentsCallback)(arg, arg1);
 				expect(value).toEqual([arg, arg1]);
 			});
 		});
