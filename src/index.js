@@ -55,20 +55,24 @@ promisificator.promisify = function (func, options) {
 	let cbArg = parseInt(opts.callbackArg, 10);
 	if (isNaN(cbArg)) {
 		throw new Error("Invalid value for callbackArg");
-	} else if (cbArg < 0) {
-		if (-cbArg > func.length) {
-			cbArg = 0;
-		} else {
+	} else if (func.length > 0 && cbArg < 0) {
+		if (-cbArg <= func.length) {
 			cbArg = func.length + cbArg;
 		}
 	}
 	return function (...args) {
 		const {promise, callback} = promisificator(options);
 		let undef;
-		while (args.length < cbArg) {
-			args.push(undef);
+		if (cbArg >= 0) {
+			while (args.length < cbArg) {
+				args.push(undef);
+			}
+			args[cbArg] = callback;
+		} else {
+			// func.length is most likely not correct
+			// so we push callback on array at location -cbArg from end
+			args[args.length + 1 + cbArg] = callback;
 		}
-		args[cbArg] = callback;
 		func(...args);
 		return promise;
 	};
