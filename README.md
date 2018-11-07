@@ -26,7 +26,7 @@ promise.then((data) => {
 });
 ```
 
-#### 3. Allow a function to accept a callback or return a promise
+#### 2. Allow a function to accept a callback or return a promise
 
 ```javascript
 const promisificator = require("promisificator");
@@ -55,7 +55,7 @@ myFunc("callback", (err, result) => {
 });
 ```
 
-#### 4. Turn a callback function into a promise
+#### 3. Turn a callback function into a promise
 
 ```javascript
 const fs = require("fs");
