@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/UziTech/promisificator.svg?branch=master)](https://travis-ci.com/UziTech/promisificator)
+
 # promisificator
 
 Returns a `promise` and a `callback` that will fulfill the `promise`.
