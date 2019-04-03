@@ -20,10 +20,8 @@
 	"homepage": "https://github.com/UziTech/promisificator#readme",
 	"scripts": {
 		"test": "jasmine ./spec/*-spec.js",
-		"release": "test-tag-publish",
-		"release:patch": "test-tag-publish patch",
-		"release:minor": "test-tag-publish minor",
-		"release:major": "test-tag-publish major"
+		"lint": "eslint .",
+		"semantic-release": "semantic-release"
 	},
 	"devDependencies": {
 		"@semantic-release/changelog": "^3.0.2",
