@@ -93,4 +93,4 @@ Default: `-1`
 
 The argument index to place the callback for `promisify`.
 
-Negative values will be from the end of the function arguments.
+Negative values will be from the end of the function arguments. Positive values start at 0.
