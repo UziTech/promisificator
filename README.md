@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/UziTech/promisificator.svg?branch=master)](https://travis-ci.com/UziTech/promisificator)
+[![Actions Status](https://github.com/UziTech/promisificator/workflows/CI/badge.svg)](https://github.com/UziTech/promisificator/actions)
 
 # promisificator
 
