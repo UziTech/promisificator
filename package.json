@@ -19,9 +19,9 @@
 	},
 	"homepage": "https://github.com/UziTech/promisificator#readme",
 	"scripts": {
-		"test": "jasmine ./spec/*-spec.js",
-		"lint": "eslint .",
-		"semantic-release": "semantic-release"
+    "test": "jest --verbose",
+    "test:cover": "jest --coverage",
+		"lint": "eslint ."
 	},
 	"devDependencies": {
 		"@semantic-release/changelog": "^5.0.1",
@@ -31,7 +31,7 @@
 		"@semantic-release/npm": "^7.0.5",
 		"@semantic-release/release-notes-generator": "^9.0.1",
 		"eslint": "^7.0.0",
-		"jasmine": "^3.5.0",
+		"jest-cli": "^26.0.1",
 		"semantic-release": "^17.0.7"
 	}
 }

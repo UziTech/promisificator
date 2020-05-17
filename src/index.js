@@ -7,41 +7,41 @@ const defaultOptions = {
 const promisificator = (cb, options) => {
 	let promise, callback, undef;
 	switch (typeof cb) {
-	case "object":
-	/* eslint-disable no-param-reassign */
-		options = cb;
-		cb = undef;
-		/* eslint-enable no-param-reassign */
-		// fallthrough
-	case "undefined":
-		const opts = Object.assign({}, defaultOptions, options);
-		promise = new Promise((resolve, reject) => {
+		case "object":
+		/* eslint-disable no-param-reassign */
+			options = cb;
+			cb = undef;
+			/* eslint-enable no-param-reassign */
+			// fallthrough
+		case "undefined":
+			const opts = Object.assign({}, defaultOptions, options);
+			promise = new Promise((resolve, reject) => {
+				callback = function (...args) {
+					if (opts.rejectOnError) {
+						if (args[0]) {
+							reject(args[0]);
+						} else if (args.length <= 2 && !opts.alwaysReturnArray) {
+							resolve(args[1]);
+						} else {
+							resolve(args.slice(1));
+						}
+					} else {
+						if (args.length <= 1 && !opts.alwaysReturnArray) {
+							resolve(args[0]);
+						} else {
+							resolve(args);
+						}
+					}
+				};
+			});
+			break;
+		case "function":
 			callback = function (...args) {
-				if (opts.rejectOnError) {
-					if (args[0]) {
-						reject(args[0]);
-					} else if (args.length <= 2 && !opts.alwaysReturnArray) {
-						resolve(args[1]);
-					} else {
-						resolve(args.slice(1));
-					}
-				} else {
-					if (args.length <= 1 && !opts.alwaysReturnArray) {
-						resolve(args[0]);
-					} else {
-						resolve(args);
-					}
-				}
+				process.nextTick(cb, ...args);
 			};
-		});
-		break;
-	case "function":
-		callback = function (...args) {
-			process.nextTick(cb, ...args);
-		};
-		break;
-	default:
-		throw new Error("Invalid argument for callback");
+			break;
+		default:
+			throw new Error("Invalid argument for callback");
 	}
 
 	return {
@@ -58,6 +58,8 @@ promisificator.promisify = function (func, options) {
 	} else if (func.length > 0 && cbArg < 0) {
 		if (-cbArg <= func.length) {
 			cbArg = func.length + cbArg;
+		} else {
+			throw new Error("Invalid value for callbackArg");
 		}
 	}
 	return function (...args) {
