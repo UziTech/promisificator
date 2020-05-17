@@ -3,7 +3,7 @@
 		"es6": true,
 		"browser": true,
 		"node": true,
-		"jasmine": true
+		"jest": true
 	},
 	"parserOptions": {
 		"sourceType": "module",
@@ -32,33 +32,6 @@
 		"no-with": 2,
 		"strict": 1,
 
-		"no-restricted-globals": [
-						"error",
-			{
-				"name": "fit",
-				"message": "Do not commit focused tests."
-						},
-			{
-				"name": "ffit",
-				"message": "Do not commit focused tests."
-						},
-			{
-				"name": "fffit",
-				"message": "Do not commit focused tests."
-						},
-			{
-				"name": "fdescribe",
-				"message": "Do not commit focused tests."
-						},
-			{
-				"name": "ffdescribe",
-				"message": "Do not commit focused tests."
-						},
-			{
-				"name": "fffdescribe",
-				"message": "Do not commit focused tests."
-						}
-				],
 		"no-shadow": 1,
 		"no-undef": 2,
 		"no-undefined": 2,
@@ -73,7 +46,7 @@
 		"computed-property-spacing": 2,
 		"eol-last": 1,
 		"func-call-spacing": 2,
-		"indent": ["error", "tab"],
+		"indent": ["error", "tab", {"SwitchCase": 1}],
 		"key-spacing": 2,
 		"keyword-spacing": 2,
 		"line-comment-position": 1,
