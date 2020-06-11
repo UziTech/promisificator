@@ -87,6 +87,14 @@ Resolve the promise with an array of values if there is only one argument.
 
 By default Promisificator will return an array only if there is more than one non-error argument sent to the callback.
 
+#### useNextTick
+
+Default: `true`
+
+If a callback is provided use [`process.nextTick`](https://nodejs.org/api/process.html#process_process_nexttick_callback_args) when calling the callback to ensure that it is called asynchronously.
+
+If this is set to `false` the callback can be called before the function returns, which might lead to unexpected results.
+
 #### callbackArg
 
 Default: `-1`
