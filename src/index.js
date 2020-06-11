@@ -2,46 +2,47 @@ const defaultOptions = {
 	rejectOnError: true,
 	alwaysReturnArray: false,
 	callbackArg: -1,
+	useNextTick: true,
 };
 
 const promisificator = (cb, options) => {
-	let promise, callback, undef;
-	switch (typeof cb) {
-		case "object":
-		/* eslint-disable no-param-reassign */
-			options = cb;
-			cb = undef;
-			/* eslint-enable no-param-reassign */
-			// fallthrough
-		case "undefined":
-			const opts = Object.assign({}, defaultOptions, options);
-			promise = new Promise((resolve, reject) => {
-				callback = function (...args) {
-					if (opts.rejectOnError) {
-						if (args[0]) {
-							reject(args[0]);
-						} else if (args.length <= 2 && !opts.alwaysReturnArray) {
-							resolve(args[1]);
-						} else {
-							resolve(args.slice(1));
-						}
-					} else {
-						if (args.length <= 1 && !opts.alwaysReturnArray) {
-							resolve(args[0]);
-						} else {
-							resolve(args);
-						}
-					}
-				};
-			});
-			break;
-		case "function":
-			callback = function (...args) {
+	let promise, callback;
+	if (typeof cb === "object" && cb !== null) {
+		options = cb; // eslint-disable-line no-param-reassign
+		cb = null; // eslint-disable-line no-param-reassign
+	}
+
+	const opts = Object.assign({}, defaultOptions, options);
+	if (typeof cb === "function") {
+		callback = function (...args) {
+			if (opts.useNextTick) {
 				process.nextTick(cb, ...args);
+			} else {
+				cb(...args);
+			}
+		};
+	} else if (typeof cb === "undefined" || cb === null) {
+		promise = new Promise((resolve, reject) => {
+			callback = function (...args) {
+				if (opts.rejectOnError) {
+					if (args[0]) {
+						reject(args[0]);
+					} else if (args.length <= 2 && !opts.alwaysReturnArray) {
+						resolve(args[1]);
+					} else {
+						resolve(args.slice(1));
+					}
+				} else {
+					if (args.length <= 1 && !opts.alwaysReturnArray) {
+						resolve(args[0]);
+					} else {
+						resolve(args);
+					}
+				}
 			};
-			break;
-		default:
-			throw new Error("Invalid argument for callback");
+		});
+	} else {
+		throw new Error("Invalid argument for callback");
 	}
 
 	return {
@@ -64,8 +65,8 @@ promisificator.promisify = function (func, options) {
 	}
 	return function (...args) {
 		const {promise, callback} = promisificator(options);
-		let undef;
 		if (cbArg >= 0) {
+			let undef;
 			while (args.length < cbArg) {
 				args.push(undef);
 			}
