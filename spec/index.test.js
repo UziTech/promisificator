@@ -47,6 +47,15 @@ describe("promisificator", () => {
 		});
 	});
 
+	test("should not use nextTick to call the callback", () => {
+		const cb = jest.fn(a => a);
+		const {callback, promise} = promisificator(cb, {useNextTick: false});
+		const arg = "arg";
+		callback(arg);
+		expect(cb).toHaveBeenCalled();
+		expect(promise).toBeUndefined();
+	});
+
 	test("should throw if invalid type", () => {
 		let err;
 		try {
@@ -55,6 +64,22 @@ describe("promisificator", () => {
 			err = error;
 		}
 		expect(err).toEqual(expect.any(Error));
+	});
+
+	test("should allow options as first argument", async () => {
+		const {callback, promise} = promisificator({rejectOnError: false});
+		const arg = "arg";
+		failingFunc(arg, callback);
+		const value = await promise;
+		expect(value).toBe(arg);
+	});
+
+	test("should allow options as second argument with null callback", async () => {
+		const {callback, promise} = promisificator(null, {rejectOnError: false});
+		const arg = "arg";
+		failingFunc(arg, callback);
+		const value = await promise;
+		expect(value).toBe(arg);
 	});
 
 	test("should resolve arg if rejectOnError is false", async () => {
