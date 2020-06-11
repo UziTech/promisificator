@@ -19,8 +19,8 @@
 	},
 	"homepage": "https://github.com/UziTech/promisificator#readme",
 	"scripts": {
-    "test": "jest --verbose",
-    "test:cover": "jest --coverage",
+		"test": "jest --verbose",
+		"test:cover": "jest --coverage",
 		"lint": "eslint ."
 	},
 	"devDependencies": {
