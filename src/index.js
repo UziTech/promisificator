@@ -72,8 +72,11 @@ promisificator.promisify = function (func, options) {
 			}
 			args[cbArg] = callback;
 		} else {
-			// func.length is most likely not correct
-			// so we push callback on array at location -cbArg from end
+
+			/*
+			 * func.length is most likely not correct
+			 * so we push callback on array at location -cbArg from end
+			 */
 			args[args.length + 1 + cbArg] = callback;
 		}
 		func(...args);
