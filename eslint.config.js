@@ -12,15 +12,15 @@ module.exports = [
 			},
 			parserOptions: {
 				sourceType: "module",
-				ecmaVersion: 2023
+				ecmaVersion: 2023,
 			},
 		},
 		rules: {
 			"block-scoped-var": 2,
-			"curly": 2,
+			curly: 2,
 			"default-case": 2,
 			"dot-location": [2, "property"],
-			"eqeqeq": 2,
+			eqeqeq: 2,
 			"no-console": 1,
 			"no-else-return": 1,
 			"no-eval": 2,
@@ -32,22 +32,20 @@ module.exports = [
 			"no-warning-comments": 1,
 			"no-with": 2,
 			"require-await": 2,
-			"strict": 1,
+			strict: 1,
 
 			"no-restricted-globals": [
 				"error",
 				{
-					"name": "fit",
-					"message": "Do not commit focused tests."
+					name: "fit",
+					message: "Do not commit focused tests.",
 				},
 				{
-					"name": "fdescribe",
-					"message": "Do not commit focused tests."
-				}
+					name: "fdescribe",
+					message: "Do not commit focused tests.",
+				},
 			],
 			"no-shadow": 1,
-			"no-undef": 2,
-			"no-undefined": 2,
 			"no-sync": 1,
 
 			"array-bracket-spacing": 2,
@@ -58,7 +56,7 @@ module.exports = [
 			"computed-property-spacing": 2,
 			"eol-last": 1,
 			"func-call-spacing": 2,
-			"indent": [2, "tab", {"SwitchCase": 1}],
+			indent: [2, "tab", {SwitchCase: 1}],
 			"key-spacing": 2,
 			"keyword-spacing": 2,
 			"line-comment-position": 1,
@@ -69,12 +67,15 @@ module.exports = [
 			"new-parens": 2,
 			"no-array-constructor": 2,
 			"no-whitespace-before-property": 2,
-			"object-curly-newline": [2, {"consistent": true}],
+			"object-curly-newline": [2, {consistent: true}],
 			"object-curly-spacing": 2,
-			"quotes": 1,
-			"semi": 2,
+			quotes: 1,
+			semi: 2,
 			"space-before-blocks": 2,
-			"space-before-function-paren": [2, {"anonymous": "always", "named": "never", "asyncArrow": "always"}],
+			"space-before-function-paren": [
+				2,
+				{anonymous: "always", named: "never", asyncArrow: "always"},
+			],
 			"space-in-parens": 2,
 			"space-infix-ops": 2,
 			"space-unary-ops": 2,
@@ -88,12 +89,10 @@ module.exports = [
 			"prefer-spread": 1,
 			"prefer-template": 2,
 			"rest-spread-spacing": 2,
-			"template-curly-spacing": 2
-		}
+			"template-curly-spacing": 2,
+		},
 	},
 	{
-		ignores: [
-			"coverage/"
-		]
-	}
+		ignores: ["coverage/"],
+	},
 ];
