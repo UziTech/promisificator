@@ -66,9 +66,8 @@ promisificator.promisify = function (func, options) {
 	return function (...args) {
 		const {promise, callback} = promisificator(options);
 		if (cbArg >= 0) {
-			let undef;
 			while (args.length < cbArg) {
-				args.push(undef);
+				args.push(undefined);
 			}
 			args[cbArg] = callback;
 		} else {
