@@ -31,7 +31,7 @@ describe("promisificator", () => {
 		await assert.rejects(promise, error => error === arg);
 	});
 
-	test("should call callback with args after tick", (done) => {
+	test("should call callback with args after tick", async () => {
 		const calls = [];
 		const cb = (...args) => {
 			calls.push(args);
@@ -42,10 +42,8 @@ describe("promisificator", () => {
 		callback(arg);
 		assert.strictEqual(calls.length, 0);
 		assert.strictEqual(promise, undefined);
-		process.nextTick(() => {
-			assert.deepStrictEqual(calls, [[arg]]);
-			done();
-		});
+		await new Promise(resolve => process.nextTick(resolve));
+		assert.deepStrictEqual(calls, [[arg]]);
 	});
 
 	test("should not use nextTick to call the callback", () => {
