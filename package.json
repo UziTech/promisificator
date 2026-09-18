@@ -20,7 +20,7 @@
 	"homepage": "https://github.com/UziTech/promisificator#readme",
 	"scripts": {
 		"test": "node --test",
-		"test:cover": "node --test --experimental-test-coverage",
+		"test:cover": "node --test --experimental-test-coverage --test-coverage-lines=100 --test-coverage-branches=100 --test-coverage-functions=100",
 		"lint": "eslint"
 	},
 	"devDependencies": {
