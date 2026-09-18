@@ -8,7 +8,6 @@ module.exports = [
 			globals: {
 				...globals.es6,
 				...globals.node,
-				...globals.jest,
 			},
 			parserOptions: {
 				sourceType: "module",

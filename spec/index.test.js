@@ -1,3 +1,6 @@
+const assert = require("node:assert/strict");
+const {beforeEach, describe, test} = require("node:test");
+
 const promisificator = require("../src");
 const {promisify} = promisificator;
 
@@ -18,52 +21,48 @@ describe("promisificator", () => {
 		const arg = "arg";
 		passingFunc(arg, callback);
 		const value = await promise;
-		expect(value).toBe(arg);
+		assert.strictEqual(value, arg);
 	});
 
 	test("should reject arg from promise", async () => {
 		const {callback, promise} = promisificator();
 		const arg = "arg";
 		failingFunc(arg, callback);
-		let err;
-		try {
-			await promise;
-		} catch (error) {
-			err = error;
-		}
-		expect(err).toBe(arg);
+		await assert.rejects(promise, error => error === arg);
 	});
 
 	test("should call callback with args after tick", (done) => {
-		const cb = jest.fn(a => a);
+		const calls = [];
+		const cb = (...args) => {
+			calls.push(args);
+			return args[0];
+		};
 		const {callback, promise} = promisificator(cb);
 		const arg = "arg";
 		callback(arg);
-		expect(cb).not.toHaveBeenCalled();
-		expect(promise).toBeUndefined();
+		assert.strictEqual(calls.length, 0);
+		assert.strictEqual(promise, undefined);
 		process.nextTick(() => {
-			expect(cb).toHaveBeenCalledWith(arg);
+			assert.deepStrictEqual(calls, [[arg]]);
 			done();
 		});
 	});
 
 	test("should not use nextTick to call the callback", () => {
-		const cb = jest.fn(a => a);
+		const calls = [];
+		const cb = (...args) => {
+			calls.push(args);
+			return args[0];
+		};
 		const {callback, promise} = promisificator(cb, {useNextTick: false});
 		const arg = "arg";
 		callback(arg);
-		expect(cb).toHaveBeenCalled();
-		expect(promise).toBeUndefined();
+		assert.strictEqual(calls.length, 1);
+		assert.strictEqual(promise, undefined);
 	});
 
 	test("should throw if invalid type", () => {
-		let err;
-		try {
-			promisificator(1);
-		} catch (error) {
-			err = error;
-		}
-		expect(err).toEqual(expect.any(Error));
+		assert.throws(() => promisificator(1), Error);
 	});
 
 	test("should allow options as first argument", async () => {
@@ -71,7 +70,7 @@ describe("promisificator", () => {
 		const arg = "arg";
 		failingFunc(arg, callback);
 		const value = await promise;
-		expect(value).toBe(arg);
+		assert.strictEqual(value, arg);
 	});
 
 	test("should allow options as second argument with null callback", async () => {
@@ -79,7 +78,7 @@ describe("promisificator", () => {
 		const arg = "arg";
 		failingFunc(arg, callback);
 		const value = await promise;
-		expect(value).toBe(arg);
+		assert.strictEqual(value, arg);
 	});
 
 	test("should resolve arg if rejectOnError is false", async () => {
@@ -87,7 +86,7 @@ describe("promisificator", () => {
 		const arg = "arg";
 		failingFunc(arg, callback);
 		const value = await promise;
-		expect(value).toBe(arg);
+		assert.strictEqual(value, arg);
 	});
 
 	test("should resolve [arg] if alwaysReturnArray is true", async () => {
@@ -95,7 +94,7 @@ describe("promisificator", () => {
 		const arg = "arg";
 		passingFunc(arg, callback);
 		const value = await promise;
-		expect(value).toEqual([arg]);
+		assert.deepStrictEqual(value, [arg]);
 	});
 
 	test("should resolve [arg] if alwaysReturnArray is true and rejectOnError is false", async () => {
@@ -103,30 +102,24 @@ describe("promisificator", () => {
 		const arg = "arg";
 		failingFunc(arg, callback);
 		const value = await promise;
-		expect(value).toEqual([arg]);
+		assert.deepStrictEqual(value, [arg]);
 	});
 
 	describe("promisify", () => {
 		test("should resolve arg from promisify", async () => {
 			const arg = "arg";
 			const value = await promisify(passingFunc)(arg);
-			expect(value).toBe(arg);
+			assert.strictEqual(value, arg);
 		});
 
 		test("should resolve arg from promisify", async () => {
 			const value = await promisify(passingFunc)();
-			expect(value).toBeUndefined();
+			assert.strictEqual(value, undefined);
 		});
 
 		test("should reject arg from promisify", async () => {
 			const arg = "arg";
-			let err;
-			try {
-				await promisify(failingFunc)(arg);
-			} catch (error) {
-				err = error;
-			}
-			expect(err).toBe(arg);
+			await assert.rejects(promisify(failingFunc)(arg), error => error === arg);
 		});
 
 		test("should be able to reuse promisified function", async () => {
@@ -136,42 +129,40 @@ describe("promisificator", () => {
 			let value;
 
 			value = await passingAsync(1);
-			expect(value).toBe(1);
+			assert.strictEqual(value, 1);
 
-			try {
-				await failingAsync(1);
-			} catch (error) {
+			await assert.rejects(failingAsync(1), error => {
 				err = error;
-			}
-			expect(err).toBe(1);
+				return error === 1;
+			});
+			assert.strictEqual(err, 1);
 
 			value = await passingAsync(2);
-			expect(value).toBe(2);
+			assert.strictEqual(value, 2);
 
-			try {
-				await failingAsync(2);
-			} catch (error) {
+			await assert.rejects(failingAsync(2), error => {
 				err = error;
-			}
-			expect(err).toBe(2);
+				return error === 2;
+			});
+			assert.strictEqual(err, 2);
 		});
 
 		test("should resolve arg if rejectOnError is false", async () => {
 			const arg = "arg";
 			const value = await promisify(failingFunc, {rejectOnError: false})(arg);
-			expect(value).toBe(arg);
+			assert.strictEqual(value, arg);
 		});
 
 		test("should resolve [arg] if alwaysReturnArray is true", async () => {
 			const arg = "arg";
 			const value = await promisify(passingFunc, {alwaysReturnArray: true})(arg);
-			expect(value).toEqual([arg]);
+			assert.deepStrictEqual(value, [arg]);
 		});
 
 		test("should resolve [arg] if alwaysReturnArray is true and rejectOnError is false", async () => {
 			const arg = "arg";
 			const value = await promisify(failingFunc, {rejectOnError: false, alwaysReturnArray: true})(arg);
-			expect(value).toEqual([arg]);
+			assert.deepStrictEqual(value, [arg]);
 		});
 
 		describe("callbackArg option", () => {
@@ -190,42 +181,29 @@ describe("promisificator", () => {
 				const arg = "arg";
 				const arg1 = "arg1";
 				const value = await promisify(middleCallback, {callbackArg: 1})(arg, null, arg1);
-				expect(value).toEqual([arg, arg1]);
+				assert.deepStrictEqual(value, [arg, arg1]);
 			});
 
 			test("should set the callback arg according to negative callbackArg", async () => {
 				const arg = "arg";
 				const arg1 = "arg1";
 				const value = await promisify(middleCallback, {callbackArg: -2})(arg, null, arg1);
-				expect(value).toEqual([arg, arg1]);
+				assert.deepStrictEqual(value, [arg, arg1]);
 			});
 
-			test("should set the callback arg to -1 if negative arg is greater than length", async () => {
-				let err;
-				try {
-					const arg = "arg";
-					await promisify(arg1 => arg1, {callbackArg: -2})(arg);
-				} catch (error) {
-					err = error;
-				}
-				expect(err).toEqual(expect.any(Error));
+			test("should set the callback arg to -1 if negative arg is greater than length", () => {
+				assert.throws(() => promisify(arg1 => arg1, {callbackArg: -2}), Error);
 			});
 
 			test("should set the callback arg to -1 by default", async () => {
 				const arg = "arg";
 				const arg1 = "arg1";
 				const value = await promisify(agumentsCallback)(arg, arg1);
-				expect(value).toEqual([arg, arg1]);
+				assert.deepStrictEqual(value, [arg, arg1]);
 			});
 
-			test("should throw if invalid", async () => {
-				let err;
-				try {
-					await promisify(() => {}, {callbackArg: "a"})();
-				} catch (error) {
-					err = error;
-				}
-				expect(err).toEqual(expect.any(Error));
+			test("should throw if invalid", () => {
+				assert.throws(() => promisify(() => {}, {callbackArg: "a"}), Error);
 			});
 		});
 	});
