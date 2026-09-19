@@ -19,8 +19,8 @@
 	},
 	"homepage": "https://github.com/UziTech/promisificator#readme",
 	"scripts": {
-		"test": "jest --verbose",
-		"test:cover": "jest --coverage",
+		"test": "node --test",
+		"test:cover": "node --test --experimental-test-coverage --test-coverage-lines=100 --test-coverage-branches=100 --test-coverage-functions=100",
 		"lint": "eslint"
 	},
 	"devDependencies": {
@@ -33,7 +33,6 @@
 		"@semantic-release/release-notes-generator": "^14.1.1",
 		"eslint": "^10.11.0",
 		"globals": "^17.12.0",
-		"jest-cli": "^30.5.2",
 		"semantic-release": "^25.0.9"
 	}
 }
